@@ -17,26 +17,29 @@ export function ExitIntentModal() {
 
   useEffect(() => {
     if (fired) return;
+
+    const SCROLL_THRESHOLD = 0.55; // 55% da pagina
+    const DELAY_AFTER_THRESHOLD_MS = 45000; // 45 segundos
     let timer: ReturnType<typeof setTimeout> | undefined;
+    let scrollArmed = false;
+
+    const trigger = () => {
+      setOpen(true);
+      setFired(true);
+    };
 
     const handleMouseLeave = (e: MouseEvent) => {
-      if (e.clientY <= 0 && !fired) {
-        setOpen(true);
-        setFired(true);
-      }
+      if (e.clientY <= 0) trigger();
     };
 
     const handleScroll = () => {
+      if (scrollArmed) return;
       const pct =
         (window.scrollY + window.innerHeight) /
         document.documentElement.scrollHeight;
-      if (pct > 0.55 && !fired) {
-        timer = setTimeout(() => {
-          if (!fired) {
-            setOpen(true);
-            setFired(true);
-          }
-        }, 8000);
+      if (pct > SCROLL_THRESHOLD) {
+        scrollArmed = true;
+        timer = setTimeout(trigger, DELAY_AFTER_THRESHOLD_MS);
       }
     };
 

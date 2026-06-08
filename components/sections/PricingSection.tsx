@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Check, Crown, Lock, ShieldCheck, Sparkles, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { UpgradeModal } from "@/components/modals/UpgradeModal";
 import { formatBRL } from "@/lib/utils";
+import { fbInitiateCheckout, fbViewContent } from "@/lib/pixel";
 
 const PREMIUM_URL = "https://pay.kiwify.com.br/igrpTHe";
 const PREMIUM_UPGRADE_URL = "https://pay.kiwify.com.br/iPtGXI5";
@@ -35,25 +36,54 @@ const premium = [
 
 export function PricingSection() {
   const [modalOpen, setModalOpen] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const viewContentFired = useRef(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !viewContentFired.current) {
+          viewContentFired.current = true;
+          fbViewContent();
+        }
+      },
+      { threshold: 0.3 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   const handleBasicClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setModalOpen(true);
   };
 
+  const handlePremiumClick = () => {
+    fbInitiateCheckout("premium");
+  };
+
   const handleAcceptUpgrade = () => {
+    fbInitiateCheckout("premium_upgrade");
     setModalOpen(false);
-    window.location.href = PREMIUM_UPGRADE_URL;
+    setTimeout(() => {
+      window.location.href = PREMIUM_UPGRADE_URL;
+    }, 150);
   };
 
   const handleKeepBasic = () => {
+    fbInitiateCheckout("basic");
     setModalOpen(false);
-    window.location.href = BASIC_URL;
+    setTimeout(() => {
+      window.location.href = BASIC_URL;
+    }, 150);
   };
 
   return (
     <section
       id="oferta"
+      ref={sectionRef}
       className="relative overflow-hidden bg-gradient-to-b from-white via-rose-50/30 to-white py-16 md:py-28"
     >
       <div className="container relative">
@@ -182,7 +212,9 @@ export function PricingSection() {
                 </ul>
 
                 <Button asChild variant="cta" size="xl" className="mt-6 w-full text-sm sm:mt-7 sm:text-base">
-                  <a href={PREMIUM_URL}>QUERO ACESSAR AGORA</a>
+                  <a href={PREMIUM_URL} onClick={handlePremiumClick}>
+                    QUERO ACESSAR AGORA
+                  </a>
                 </Button>
 
                 <div className="mt-4 flex flex-wrap justify-center gap-x-3 gap-y-1 text-[10px] text-muted-foreground sm:gap-x-4 sm:text-[11px]">
