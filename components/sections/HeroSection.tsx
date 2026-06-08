@@ -127,20 +127,6 @@ export function HeroSection() {
           transition={{ duration: 0.7, delay: 0.6 }}
           className="mt-10 flex flex-col items-center gap-3"
         >
-          <div className="flex -space-x-2">
-            {[
-              "from-rose-300 to-rose-500",
-              "from-amber-300 to-amber-500",
-              "from-pink-300 to-pink-500",
-              "from-violet-300 to-violet-500",
-              "from-emerald-300 to-emerald-500",
-            ].map((c, i) => (
-              <div
-                key={i}
-                className={`h-9 w-9 rounded-full border-2 border-white bg-gradient-to-br ${c} shadow-sm`}
-              />
-            ))}
-          </div>
           <div className="flex items-center gap-1.5">
             {Array.from({ length: 5 }).map((_, i) => (
               <Star
