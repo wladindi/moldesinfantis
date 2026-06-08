@@ -1,0 +1,42 @@
+# dependencies
+node_modules
+.pnp
+.pnp.*
+
+# next.js
+.next
+out
+next-env.d.ts
+
+# production
+build
+dist
+
+# environment
+.env
+.env*.local
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# os
+.DS_Store
+Thumbs.db
+
+# editors
+.vscode
+.idea
+
+# claude / claude code
+.claude/settings.local.json
+
+# vercel
+.vercel
+
+# temp / scratch
+prd_extracted.txt
+*.tsbuildinfo
+

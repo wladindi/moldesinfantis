@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 350 60% 98%;
+    --foreground: 340 30% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 340 30% 15%;
+    --primary: 340 82% 52%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 30 90% 96%;
+    --secondary-foreground: 340 30% 15%;
+    --accent: 38 96% 60%;
+    --accent-foreground: 340 30% 15%;
+    --muted: 340 20% 96%;
+    --muted-foreground: 340 10% 40%;
+    --border: 340 20% 90%;
+    --ring: 340 82% 52%;
+    --radius: 14px;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  ::selection {
+    @apply bg-primary text-primary-foreground;
+  }
+}
+
+@layer utilities {
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-rose-500 via-rose-600 to-amber-500;
+  }
+
+  .gradient-bg {
+    background: linear-gradient(135deg, #fff5f7 0%, #fff 50%, #fff8eb 100%);
+  }
+
+  .shimmer-bg {
+    background: linear-gradient(
+      90deg,
+      rgba(244, 63, 111, 0) 0%,
+      rgba(244, 63, 111, 0.18) 50%,
+      rgba(244, 63, 111, 0) 100%
+    );
+    background-size: 200% 100%;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
